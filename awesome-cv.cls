@@ -285,6 +285,10 @@
 % Usage: \homepage{<url>}
 \newcommand*{\homepage}[1]{\def\@homepage{#1}}
 
+% Defines writer's portfolio (optional)
+% Usage: \portfolio{<url>}
+\newcommand*{\portfolio}[1]{\def\@portfolio{#1}}
+
 % Defines writer's github (optional)
 % Usage: \github{<github-nick>}
 \newcommand*{\github}[1]{\def\@github{#1}}
@@ -472,6 +476,12 @@
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
           \href{http://\@homepage}{\faHome\acvHeaderIconSep\@homepage}%
+        }%
+      \ifthenelse{\isundefined{\@portfolio}}%
+        {}%
+        {%
+          \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
+          \href{https://\@portfolio}{\faGlobe\acvHeaderIconSep Portfolio}%
         }%
       \ifthenelse{\isundefined{\@github}}%
         {}%
