@@ -1,0 +1,162 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+% Two-column resume. Compile with: xelatex resume-two-column.tex
+
+%-------------------------------------------------------------------------------
+% CONFIGURATIONS
+%-------------------------------------------------------------------------------
+\documentclass[10pt, a4paper]{article}
+
+\usepackage[a4paper, left=1.3cm, right=1.3cm, top=1cm, bottom=0.8cm]{geometry}
+\usepackage{fontspec}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{paracol}
+\usepackage{hyperref}
+
+\setmainfont{Montserrat}[
+  Extension      = .otf,
+  UprightFont    = *-Regular,
+  BoldFont       = *-SemiBold,
+  ItalicFont     = *-Italic,
+  BoldItalicFont = *-SemiBoldItalic
+]
+\newfontfamily\namefont{Montserrat}[Extension=.otf, UprightFont=*-Bold]
+
+\definecolor{text}{HTML}{111111}
+\definecolor{link}{HTML}{1155CC}
+\hypersetup{colorlinks=true, urlcolor=link, linkcolor=link, pdftitle={Darshit Joshi - Resume}, pdfauthor={Darshit Joshi}}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\color{text}
+
+\setlist[itemize]{leftmargin=1.5em, label={\raisebox{0.05ex}{$\bullet$}}, topsep=3pt, itemsep=1.5pt, parsep=0pt, partopsep=0pt}
+
+\columnratio{0.6}
+\setlength{\columnsep}{0.9cm}
+
+%-------------------------------------------------------------------------------
+% COMMANDS
+%-------------------------------------------------------------------------------
+% \resumesection{<title>}
+\newcommand{\resumesection}[1]{%
+  \par\vspace{7pt}{\fontsize{13}{16}\selectfont\bfseries #1}\par\vspace{4pt}}
+
+% \job{<title>}{<company>}{<dates>}
+\newcommand{\job}[3]{%
+  \par\vspace{6pt}{\bfseries #1}\\{\bfseries #2}\\{\itshape #3}\par}
+
+% \project{<name>}{<stack>}
+\newcommand{\project}[2]{%
+  \par\vspace{4pt}{\bfseries #1 \textbar{} #2}\par}
+
+% \skillgroup{<label>}{<items>}
+\newcommand{\skillgroup}[2]{%
+  {\bfseries #1:} #2\par\vspace{2pt}}
+
+
+%-------------------------------------------------------------------------------
+\begin{document}
+\fontsize{9.2}{12}\selectfont
+
+%-------------------------------------------------------------------------------
+%	HEADER
+%-------------------------------------------------------------------------------
+\begin{minipage}[t]{0.58\textwidth}
+  \vspace{0pt}
+  {\namefont\fontsize{24}{28}\selectfont DARSHIT JOSHI}\\[3pt]
+  {\fontsize{13}{16}\selectfont Senior Software Engineer}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.4\textwidth}
+  \vspace{0pt}
+  \raggedleft\fontsize{10}{13}\selectfont
+  \href{tel:+919328605989}{+91 9328605989}\\
+  \href{mailto:joshidarshit2002@gmail.com}{joshidarshit2002@gmail.com}\\
+  \href{https://darshit-joshi.vercel.app}{darshit-joshi.vercel.app}\\
+  \href{https://www.linkedin.com/in/darshitjoshi2002}{LinkedIn}\enspace
+  \href{https://github.com/whojoshi69}{GitHub}
+\end{minipage}
+
+\vspace{6pt}
+
+\begin{paracol}{2}
+\raggedright
+
+%-------------------------------------------------------------------------------
+%	LEFT COLUMN: EXPERIENCE
+%-------------------------------------------------------------------------------
+\resumesection{PROFESSIONAL EXPERIENCE}
+
+\job{Senior Software Engineer}{Armakuni}{March 2025 – Present}
+\begin{itemize}
+  \item Built an AI-powered \textbf{Smart Call Assistant} integrating \textbf{ElevenLabs TTS}, \textbf{AWS Transcribe STT}, \textbf{Amazon Bedrock} LLMs and an \textbf{OpenSearch} knowledge base, with Google Calendar booking, availability lookup and real estate broker website scrapping, so the client could \textbf{answer calls and book viewings around the clock} without adding staff for support.
+  \item Built a medical-domain \textbf{RAG} SMS agent on \textbf{Twilio} with issue escalation, tracking and follow-ups, giving patients \textbf{instant answers} and sending only unresolved cases to human agent, which \textbf{cut the support team's manual workload}.
+  \item Created a text-to-image and image-to-image system for consistent game character generation using \textbf{SageMaker}, \textbf{ComfyUI} and \textbf{Qwen} image-edit models, using \textbf{LoRAs} and quantized models to cut processing time, so the client's art team could \textbf{produce on model characters quickly} instead of redrawing each variation for storybook.
+\end{itemize}
+
+\job{Software Engineer}{DosePack (Meditab)}{December 2022 – March 2025}
+\begin{itemize}
+  \item Designed and built \textbf{REST APIs} that streamlined business workflows and cut response times by \textbf{50\%}.
+  \item Automated database migrations across environments with version control, cutting deployment time by \textbf{40\%} and letting the team \textbf{ship releases faster with fewer migration errors}; published the tool as a \textbf{PyPI} library.
+  \item Built \textbf{ETL pipelines} for data pre-processing, feature engineering and validation, plus daily performance statistics that gave stakeholders \textbf{data to base decisions on}.
+  \item Developed real-time features over \textbf{WebSockets} (live updates, dynamic dashboards, notifications).
+  \item Implemented authentication with \textbf{JWT} and \textbf{RBAC}, and a single sign-on (\textbf{SSO}) solution using \textbf{OAuth 2.0} scopes, giving the client \textbf{secure, role-based access} with one login across its apps.
+  \item Designed an optimized \textbf{SQL} database that improved storage utilization and backend performance, \textbf{keeping the app fast} as data grew.
+  \item Optimized compute-heavy algorithms for \textbf{pack-filling slot customization}.
+  \item Built a centralized pharmacy traffic manager: a middleware service that applies filling rules across multiple US pharmacies and filling services, \textbf{balancing workload} so orders were filled more efficiently.
+\end{itemize}
+
+
+%-------------------------------------------------------------------------------
+%	RIGHT COLUMN: PROJECTS, EDUCATION, SKILLS, ACHIEVEMENTS
+%-------------------------------------------------------------------------------
+\switchcolumn
+\raggedright
+
+\resumesection{PROJECTS}
+
+\project{Tradesperson Recommendation}{FastAPI}
+\begin{itemize}
+  \item Used \textbf{Claude on Bedrock} to tag job quotes and tradespeople against a \textbf{trade taxonomy} and \textbf{rank tradespeople} per quote by tag overlap, with background scoring and cached assessments, so customers get \textbf{matched to the right trade}.
+\end{itemize}
+
+\project{Ad Recommendation}{XGBoost, MLOps}
+\begin{itemize}
+  \item Built an ad recommendation model to predict higher \textbf{CTR}, backed by an \textbf{MLOps} pipeline.
+\end{itemize}
+
+\project{Fraud Rule Optimization}{FastAPI, Optuna}
+\begin{itemize}
+  \item Used \textbf{Optuna} to search trillions of detector-score permutations for the business rule that catches the \textbf{most fraud} with the \textbf{fewest false positives}.
+\end{itemize}
+
+\project{Image Generation}{Stable Diffusion}
+\begin{itemize}
+  \item Generated images with \textbf{Stable Diffusion}, fine-tuning with \textbf{LoRAs}, \textbf{VAEs}, \textbf{CUDA} and checkpoints.
+\end{itemize}
+
+\resumesection{EDUCATION}
+
+{\bfseries Bachelor of Technology}\\
+Dharmsinh Desai University, Nadiad\\
+2019 – 2023 \enspace·\enspace 8.72 CGPA
+
+\resumesection{TECH STACK}
+
+Python, Django, FastAPI, Flask, TypeScript, Node.js, JavaScript (ES6+), Express, Prisma, HTML, CSS, REST APIs, Git, Docker, CI/CD, AWS, Bedrock, SageMaker, Vertex AI, Vector DBs
+
+\resumesection{ACHIEVEMENTS}
+\begin{itemize}
+  \item \textbf{Google Cloud Certified} Professional Machine Learning Engineer.
+  \item \textbf{Interviewer} for campus placement drives and senior roles at Armakuni.
+  \item \textbf{Training and Placement Coordinator} at DDU (2023).
+  \item \textbf{Coordinator} for DDU NSS club activities.
+\end{itemize}
+
+\end{paracol}
+
+\end{document}
