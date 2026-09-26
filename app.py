@@ -1,64 +1,55 @@
-from flask import Flask, render_template, request, jsonify, send_file
 import os
-import subprocess
-import glob
+
+from flask import Flask, jsonify, render_template, request, send_file
+
+import resume_builder
 
 app = Flask(__name__)
 
-RESUME_DIR = '/home/darshit/Documents/personal/darshit_joshi_resume'
-RESUME_SECTIONS = ['summary', 'skills', 'experience', 'projects', 'education']
 
 @app.route('/')
 def index():
-    return render_template('index.html', sections=RESUME_SECTIONS)
+    return render_template('index.html')
 
-@app.route('/get_file/<section>')
-def get_file(section):
-    file_path = os.path.join(RESUME_DIR, 'resume', f'{section}.tex')
-    try:
-        with open(file_path, 'r') as f:
-            return jsonify({'content': f.read()})
-    except FileNotFoundError:
-        return jsonify({'error': 'File not found'}), 404
 
-@app.route('/save_file/<section>', methods=['POST'])
-def save_file(section):
-    content = request.json.get('content', '')
-    file_path = os.path.join(RESUME_DIR, 'resume', f'{section}.tex')
-    try:
-        with open(file_path, 'w') as f:
-            f.write(content)
-        return jsonify({'success': True})
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+@app.get('/api/resume')
+def get_resume():
+    return jsonify(resume_builder.load())
 
-@app.route('/generate_pdf', methods=['POST'])
-def generate_pdf():
-    try:
-        # Clean old files
-        for ext in ['*.aux', '*.log', '*.out']:
-            for f in glob.glob(os.path.join(RESUME_DIR, ext)):
-                os.remove(f)
-        
-        # Generate PDF
-        result = subprocess.run(['xelatex', 'resume.tex'], 
-                              cwd=RESUME_DIR, 
-                              capture_output=True, 
-                              text=True)
-        
-        if result.returncode == 0:
-            return jsonify({'success': True, 'message': 'PDF generated successfully'})
-        else:
-            return jsonify({'error': result.stderr}), 500
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
 
-@app.route('/download_pdf')
-def download_pdf():
-    pdf_path = os.path.join(RESUME_DIR, 'resume.pdf')
-    if os.path.exists(pdf_path):
-        return send_file(pdf_path, as_attachment=True)
-    return jsonify({'error': 'PDF not found'}), 404
+@app.post('/api/resume')
+def save_resume():
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        return jsonify({'ok': False, 'error': 'Invalid resume data.'}), 400
+    resume_builder.save(data)
+    result = resume_builder.build()
+    return jsonify(result), (200 if result['ok'] else 422)
+
+
+@app.get('/api/status')
+def status():
+    return jsonify({
+        'pdf': os.path.exists(resume_builder.PDF_FILE),
+        'last_build': resume_builder.last_build(),
+    })
+
+
+@app.get('/resume.pdf')
+def pdf():
+    if not os.path.exists(resume_builder.PDF_FILE):
+        return jsonify({'error': 'PDF not built yet.'}), 404
+    name = resume_builder.load()['header']['name'].strip().replace(' ', '_') or 'Resume'
+    response = send_file(
+        resume_builder.PDF_FILE,
+        mimetype='application/pdf',
+        as_attachment=request.args.get('download') == '1',
+        download_name=f'{name}_Resume.pdf',
+        max_age=0,
+    )
+    response.headers['Cache-Control'] = 'no-store'
+    return response
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

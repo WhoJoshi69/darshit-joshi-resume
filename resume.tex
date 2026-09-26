@@ -1,115 +1,65 @@
 %!TEX TS-program = xelatex
 %!TEX encoding = UTF-8 Unicode
-% Awesome CV LaTeX Template for CV/Resume
-%
-% This template has been downloaded from:
-% https://github.com/posquit0/Awesome-CV
-%
-% Author:
-% Claud D. Park <posquit0.bj@gmail.com>
-% http://www.posquit0.com
-%
-% Template license:
-% CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
-%
+% Resume in the classic "Jake's Resume" style (Computer Modern, ruled sections).
+% Compile with: xelatex resume.tex
 
 
 %-------------------------------------------------------------------------------
 % CONFIGURATIONS
 %-------------------------------------------------------------------------------
-% A4 paper size by default, use 'letterpaper' for US letter
-\documentclass[12pt, a4paper]{awesome-cv}
+\documentclass[a4paper, 11pt]{article}
 
-% \usepackage[none]{hyphenat}
+\usepackage[a4paper, left=1.3cm, right=1.3cm, top=1.1cm, bottom=1.1cm]{geometry}
+\usepackage{fontspec}          % Latin Modern (Computer Modern look) by default
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\usepackage[hidelinks]{hyperref}
 
-% Configure page margins with geometry
-\geometry{left=1.4cm, top=.8cm, right=1.4cm, bottom=.8cm, footskip=.5cm}
+\hypersetup{pdftitle={Darshit Joshi - Resume}, pdfauthor={Darshit Joshi}}
 
-% Specify the location of the included fonts
-\fontdir[fonts/]
+\pagestyle{empty}
+\raggedbottom
+\raggedright
+\frenchspacing
+\setlength{\parindent}{0pt}
+\setlength{\tabcolsep}{0pt}
 
-% Color for highlights
-% Awesome Colors: awesome-emerald, awesome-skyblue, awesome-red, awesome-pink, awesome-orange
-%                 awesome-nephritis, awesome-concrete, awesome-darknight
-\colorlet{awesome}{awesome-red}
-% Uncomment if you would like to specify your own color
-% \definecolor{awesome}{HTML}{CA63A8}
+% Section titles: bold, large, with a full-width rule underneath
+\titleformat{\section}
+  {\raggedright\large\bfseries}{}{0em}{}[\vspace{-2pt}\titlerule]
+\titlespacing*{\section}{0pt}{8pt}{4pt}
 
-% Colors for text
-% Uncomment if you would like to specify your own color
-% \definecolor{darktext}{HTML}{414141}
-% \definecolor{text}{HTML}{333333}
-% \definecolor{graytext}{HTML}{5D5D5D}
-% \definecolor{lighttext}{HTML}{999999}
-
-% Set false if you don't want to highlight section with awesome color
-\setbool{acvSectionColorHighlight}{true}
-
-
-
-% If you would like to change the social information separator from a pipe (|) to something else
-\renewcommand{\acvHeaderSocialSep}{\quad\textbar\quad}
+% Bullet lists
+\setlist[itemize]{leftmargin=2.4em, label=\textbullet, topsep=2pt, itemsep=1pt, parsep=0pt, partopsep=0pt, before=\small}
 
 
 %-------------------------------------------------------------------------------
-%	PERSONAL INFORMATION
-%	Comment any of the lines below if they are not required
+% COMMANDS
 %-------------------------------------------------------------------------------
-% Available options: circle|rectangle,edge/noedge,left/right
-% \photo[rectangle,edge,right]{./examples/profile}
-\name{Darshit}{Joshi}
-% \position{Software Architect{\enskip\cdotp\enskip}Security Expert}
-% \address{42-8, Bangbae-ro 15-gil, Seocho-gu, Seoul, 00681, Rep. of KOREA}
+% \resumeSubheading{<organization>}{<date>}{<role>}{<location>}
+\newcommand{\resumeSubheading}[4]{%
+  \vspace{2pt}
+  \begin{tabular*}{\textwidth}[t]{l@{\extracolsep{\fill}}r}
+    \textbf{#1} & \textbf{#2} \\
+    \textit{\small #3} & \textit{\small #4} \\
+  \end{tabular*}\par\vspace{-2pt}%
+}
 
-\mobile{+91-9328605989}
-\email{joshidarshit2002@gmail.com}
-\portfolio{darshit-joshi.vercel.app}
-% \homepage{www.posquit0.com}
-\github{whojoshi69}
-\linkedin{darshitjoshi2002}
-% \gitlab{gitlab-id}
-% \stackoverflow{SO-id}{SO-name}
-% \twitter{@twit}
-% \skype{skype-id}
-% \reddit{reddit-id}
-% \medium{madium-id}
-% \googlescholar{googlescholar-id}{name-to-display}
-%% \firstname and \lastname will be used
-% \googlescholar{googlescholar-id}{}
-% \extrainfo{extra informations}
-
-% \quote{``Be the change that you want to see in the world."}
+% \resumeSkill{<category>}{<items>}
+\newcommand{\resumeSkill}[2]{#1: #2\par}
 
 
 %-------------------------------------------------------------------------------
 \begin{document}
 
-% Print the header with above personal informations
-% Give optional argument to change alignment(C: center, L: left, R: right)
-\makecvheader[C]
-
-% Print the footer with 3 arguments(<left>, <center>, <right>)
-% Leave any of these blank if they are not needed
-% \makecvfooter
-%   {\today}
-%   {Byungjin Park~~~·~~~Résumé}
-%   {\thepage}
-
-
 %-------------------------------------------------------------------------------
-%	CV/RESUME CONTENT
-%	Each section is imported separately, open each file in turn to modify content
+%	CONTENT
+%	Generated from resume.json -- edit it through the web UI (python app.py)
 %-------------------------------------------------------------------------------
-\input{resume/summary.tex}
-\input{resume/skills.tex}
-\input{resume/projects.tex}
-\input{resume/experience.tex}
-% \input{resume/honors.tex}
-% \input{resume/presentation.tex}
-% \input{resume/writing.tex}
-\input{resume/achievements.tex}
-\input{resume/education.tex}
-% \input{resume/extracurricular.tex}
+\input{resume/header.tex}
+\input{resume/body.tex}
 
 
 %-------------------------------------------------------------------------------

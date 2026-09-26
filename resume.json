@@ -1,0 +1,163 @@
+{
+  "header": {
+    "name": "Darshit Joshi",
+    "phone": "+91 9328605989",
+    "email": "joshidarshit2002@gmail.com",
+    "links": [
+      {
+        "icon": "globe",
+        "url": "https://darshit-joshi.vercel.app",
+        "text": ""
+      },
+      {
+        "icon": "linkedin",
+        "url": "https://linkedin.com/in/darshitjoshi2002",
+        "text": ""
+      },
+      {
+        "icon": "github",
+        "url": "https://github.com/whojoshi69",
+        "text": ""
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "summary",
+      "title": "Summary",
+      "visible": true
+    },
+    {
+      "id": "skills",
+      "title": "Skills",
+      "visible": true
+    },
+    {
+      "id": "projects",
+      "title": "Projects",
+      "visible": true
+    },
+    {
+      "id": "experience",
+      "title": "Experience",
+      "visible": true
+    },
+    {
+      "id": "achievements",
+      "title": "Achievements",
+      "visible": true
+    },
+    {
+      "id": "education",
+      "title": "Education",
+      "visible": true
+    }
+  ],
+  "summary": "Senior Software Engineer building secure, efficient, and user focused solutions. GCP certified ML Professional Engineer who enjoys optimizing processes, exploring quirky UIs, and staying updated with the latest tech.",
+  "skills": [
+    {
+      "category": "Development",
+      "items": "Python, JavaScript, TypeScript FastAPI, Django, SQLAlchemy, MySQL, PostgreSQL, Redis, RabbitMQ, Celery, WebSockets, React, Next.js"
+    },
+    {
+      "category": "Deployment and DevOps",
+      "items": "Kubernetes, Jenkins, Docker, ArgoCD, Grafana, LogQL"
+    },
+    {
+      "category": "AI/ML",
+      "items": "LangChain, LangGraph, VectorDB, Stable Diffusion, PyTorch, LoRA finetuning, CUDA, VAEs, LLM fine-tuning, XGBoost, Decision trees, hyperparameter tuning"
+    },
+    {
+      "category": "AI Tools",
+      "items": "Claude Code, Codex, Antigravity, Cursor, Kiro, Copilot"
+    },
+    {
+      "category": "AWS",
+      "items": "EC2, S3, ECS Fargate, Bedrock, Sagemaker, lambda, SQS, AWS connect, AWS transcribe, CloudWatch"
+    },
+    {
+      "category": "GCP",
+      "items": "VertexAI, DataFlow, KubeFlow"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Ad recommendation",
+      "url": "",
+      "description": "Ad recommendation model to predict higher ctr XG Boost and MLOps pipeline."
+    },
+    {
+      "name": "Smart Call Assistant",
+      "url": "",
+      "description": "AI-powered call system with ElevenLabs TTS, AWS Transcribe STT, Bedrock LLM, and OpenSearch. Features Google Calendar booking and real estate tools."
+    },
+    {
+      "name": "Stable Diffusion",
+      "url": "",
+      "description": "Developed a project using Stable Diffusion models to generate images. Gained hands-on experience in generative AI concepts, including LORAs, VAEs, CUDA and checkpoints, enhancing my understanding of image generation workflows and model fine-tuning. This project deepened my knowledge generative AI techniques."
+    },
+    {
+      "name": "Consistent Character Generator",
+      "url": "",
+      "description": "Text-to-image and image-to-image system for consistent character creation using SageMaker, ComfyUI, and Qwen models. used LoRAs and quantized models to reduce processing time"
+    },
+    {
+      "name": "Medical RAG SMS Chatbot",
+      "url": "",
+      "description": "Healthcare chatbot using Twilio with issue escalation, tracking, and follow-up capabilities."
+    },
+    {
+      "name": "AI Movie Recommendation",
+      "url": "",
+      "description": "movie recommendation using opensource GenAI APIs."
+    },
+    {
+      "name": "Fraud detection business rule optimization",
+      "url": "",
+      "description": "Used optuna to reduce trillions of permutations to find best combination of detector scores for business rule which can catch max frauds with min false positives"
+    }
+  ],
+  "experience": [
+    {
+      "organization": "Armakuni",
+      "role": "Sr. Software Engineer",
+      "date": "Mar. 2025 – Present",
+      "location": "",
+      "bullets": [
+        "**Smart Call Assistant:** Developed AI-powered call assistant integrating **ElevenLabs TTS**, **AWS Transcribe STT**, **Amazon Bedrock LLM**, and **OpenSearch** for knowledge base. Implemented features for Google Calendar booking, availability lookup, and real estate broker website building.",
+        "**Medical RAG SMS Chatbot:** Built medical domain RAG chatbot using **Twilio** with comprehensive issue escalation, tracking, and follow-up capabilities for healthcare communication.",
+        "**Gaming Character Generation:** Created text-to-image and image-to-image generation system for consistent character creation in gaming industry using **SageMaker**, **ComfyUI**, and **Qwen image edit models**."
+      ]
+    },
+    {
+      "organization": "DosePack (Meditab)",
+      "role": "Software Engineer",
+      "date": "Dec. 2022 – Mar. 2025",
+      "location": "",
+      "bullets": [
+        "**API Development:** Designed and implemented RESTful APIs to streamline business workflows, reduce response times by 50%, and enhance system interoperability.",
+        "**Migration Automation:** Automated database migration processes, reducing deployment time by 40% with version control across environments. Created and published PyPi library for the same.",
+        "**Data Engineering and Analytics:** Built ETL pipelines for **data pre-processing, feature engineering and validation** to support analytics. created daily performance statics for stakeholders",
+        "**Real-time Systems:** Developed real-time solutions using **WebSockets**, enabling bi-directional communication for features like **live updates**, **dynamic dashboards**, and **notification services**.",
+        "**Authentication Systems:** Designed and implemented secure authentication systems using token-based mechanisms **(JWT)** and role-based access control **(RBAC)**. Developed a seamless single sign-on **(SSO)** solution with **OAuth2.0 scopes**.",
+        "**Database Engineering:** Enhanced backend performance by designing a well-optimized SQL database, significantly improving storage utilization and system efficiency.",
+        "**Algorithm Optimization:** Optimized computationally intensive algorithms for **pack-filling slot customizations** and workflow optimizations.",
+        "**Centralized pharmacy traffic manager:** Designed and implemented middleware service to manage optimized filling with set of rules for multiple US based pharmacy and filling services to improve their efficiency."
+      ]
+    }
+  ],
+  "achievements": [
+    "Training and Placement Coordinator at DDU (2023).",
+    "Interviewer for campus placement drives and senior roles at Armakuni.",
+    "Coordinator at DDU NSS club activities."
+  ],
+  "education": [
+    {
+      "institution": "Dharmsinh Desai University",
+      "degree": "B.Tech, CGPA: 8.72/10",
+      "date": "Jul. 2019 – May. 2023",
+      "location": "Nadiad, Gujarat",
+      "bullets": []
+    }
+  ]
+}

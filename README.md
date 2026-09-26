@@ -1,38 +1,34 @@
 # Darshit Joshi Resume
 
-LaTeX resume template based on Awesome CV.
+LaTeX resume in the classic "Jake's Resume" style, edited through a small web UI.
 
 ## Folder Structure
 
 ```
 darshit_joshi_resume/
-├── cv/                 # CV sections
-├── resume/             # Resume sections  
-├── fonts/              # Font files
-├── templates/          # HTML templates
-├── awesome-cv.cls      # LaTeX class file
-├── resume.tex          # Main resume file
-├── cv.tex              # Main CV file
-├── coverletter.tex     # Cover letter file
-└── app.py              # Flask app
+├── resume.json         # Resume content (source of truth)
+├── resume.tex          # Preamble / styling; inputs the generated files
+├── resume/             # Generated section .tex files (don't edit by hand)
+├── resume_builder.py   # resume.json -> .tex files -> resume.pdf
+├── app.py              # Flask web UI
+├── templates/          # Web UI page
+├── cv.tex, coverletter.tex, awesome-cv.cls, cv/, fonts/   # Awesome-CV CV and cover letter
+└── resume-two-column.tex
 ```
 
-## Generate PDF
+## Editing the resume
 
-### Requirements
-- TeX Live distribution
-- XeLaTeX compiler
+Requirements: a TeX Live install with XeLaTeX (`sudo apt-get install texlive-full`) and Flask.
 
-### Steps
-1. Install TeX Live: `sudo apt-get install texlive-full`
-2. Compile resume: `xelatex resume.tex`
-3. Output: `resume.pdf`
-
-### Quick Start
 ```bash
-# Clone and navigate
-cd darshit_joshi_resume
-
-# Generate PDF
-xelatex resume.tex
+./start.sh            # or: venv/bin/python app.py
 ```
+
+Open http://localhost:5000, edit any field, and press **Save & build** (or Ctrl+S).
+The content is saved to `resume.json`, the `.tex` files are regenerated, and `resume.pdf`
+is rebuilt and reloaded in the preview. If LaTeX fails, the previous PDF is kept and the
+error is shown under the preview.
+
+Styling (fonts, margins, section rules) lives in the preamble of `resume.tex`.
+
+To build without the UI: `xelatex resume.tex`.

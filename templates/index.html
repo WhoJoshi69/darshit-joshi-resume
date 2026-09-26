@@ -1,114 +1,927 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>LaTeX Resume Editor</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        .tabs { display: flex; border-bottom: 2px solid #ddd; margin-bottom: 20px; }
-        .tab { padding: 10px 20px; cursor: pointer; border: none; background: #f5f5f5; }
-        .tab.active { background: #007bff; color: white; }
-        .editor { width: 100%; height: 400px; font-family: monospace; }
-        .buttons { margin: 20px 0; }
-        button { padding: 10px 20px; margin-right: 10px; cursor: pointer; }
-        .save { background: #28a745; color: white; border: none; }
-        .generate { background: #007bff; color: white; border: none; }
-        .download { background: #17a2b8; color: white; border: none; }
-        .message { padding: 10px; margin: 10px 0; border-radius: 4px; }
-        .success { background: #d4edda; color: #155724; }
-        .error { background: #f8d7da; color: #721c24; }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resume Studio</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --surface: #ffffff;
+    --surface-2: #f7f8fa;
+    --border: #e4e7ec;
+    --border-strong: #d0d5dd;
+    --text: #101828;
+    --text-2: #475467;
+    --muted: #98a2b3;
+    --accent: #4f46e5;
+    --accent-hover: #4338ca;
+    --accent-soft: #eef2ff;
+    --accent-text: #ffffff;
+    --danger: #d92d20;
+    --danger-soft: #fef3f2;
+    --ok: #12b76a;
+    --warn: #dc6803;
+    --warn-soft: #fffaeb;
+    --preview-bg: #e5e7eb;
+    --shadow: 0 1px 2px rgba(16, 24, 40, .05);
+    --radius: 10px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1115;
+      --surface: #171a21;
+      --surface-2: #1e222b;
+      --border: #282d38;
+      --border-strong: #363c4a;
+      --text: #e6e8ec;
+      --text-2: #a9b0bc;
+      --muted: #6b7280;
+      --accent: #818cf8;
+      --accent-hover: #a5b4fc;
+      --accent-soft: rgba(129, 140, 248, .14);
+      --accent-text: #0f1115;
+      --danger: #f97066;
+      --danger-soft: rgba(249, 112, 102, .12);
+      --warn: #fdb022;
+      --warn-soft: rgba(253, 176, 34, .1);
+      --preview-bg: #0a0c0f;
+      --shadow: none;
+      color-scheme: dark;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    color: var(--text);
+    font: 14px/1.5 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+  button { font: inherit; color: inherit; }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    display: flex; align-items: center; gap: 14px;
+    height: 56px; padding: 0 20px; flex-shrink: 0;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 15px; }
+  .brand-mark {
+    display: grid; place-items: center; width: 28px; height: 28px; border-radius: 8px;
+    background: var(--accent); color: var(--accent-text);
+    font: 600 15px/1 Georgia, "Times New Roman", serif;
+  }
+  .status {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 3px 10px; border-radius: 999px;
+    background: var(--surface-2); border: 1px solid var(--border);
+    font-size: 12.5px; color: var(--text-2); white-space: nowrap;
+  }
+  .status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+  .status[data-state="dirty"] .dot { background: var(--warn); }
+  .status[data-state="error"] .dot { background: var(--danger); }
+  .status[data-state="building"] .dot {
+    width: 10px; height: 10px; background: none;
+    border: 2px solid var(--accent); border-right-color: transparent;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spacer { flex: 1; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 36px; padding: 0 14px; border-radius: 8px;
+    border: 1px solid var(--border-strong); background: var(--surface);
+    font-weight: 500; cursor: pointer; text-decoration: none; color: var(--text); white-space: nowrap;
+  }
+  .btn:hover { background: var(--surface-2); }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+  .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+  .btn:disabled { opacity: .6; cursor: progress; }
+  .btn:focus-visible, .icon-btn:focus-visible, .tab:focus-visible, .card-toggle:focus-visible, .add-btn:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+  kbd {
+    padding: 1px 5px; border-radius: 4px; background: rgba(255, 255, 255, .2);
+    font: 500 11px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  /* ---------- Workspace ---------- */
+  .workspace { flex: 1; display: grid; grid-template-columns: minmax(420px, 620px) 1fr; min-height: 0; }
+  .editor { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--border); }
+  .tabs {
+    display: flex; flex-wrap: wrap; column-gap: 2px; padding: 6px 12px 0; flex-shrink: 0;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+  }
+  .tab {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 8px 9px; margin-bottom: -1px; border: 0; border-bottom: 2px solid transparent; background: none;
+    font-weight: 500; color: var(--text-2); cursor: pointer; white-space: nowrap;
+  }
+  .tab:hover { color: var(--text); }
+  .tab[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab .count {
+    min-width: 18px; padding: 0 5px; border-radius: 999px; text-align: center;
+    background: var(--surface-2); border: 1px solid var(--border);
+    font-size: 11px; line-height: 16px; color: var(--text-2);
+  }
+  .tab.is-hidden .tab-label { text-decoration: line-through; opacity: .6; }
+
+  .panel { flex: 1; overflow-y: auto; padding: 24px 20px 96px; }
+  .panel-head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 18px; }
+  .panel-head h2 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -.01em; }
+  .panel-head p { margin: 2px 0 0; color: var(--text-2); }
+  .hidden-note {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding: 10px 12px;
+    border-radius: 8px; background: var(--warn-soft); color: var(--warn); font-size: 13px;
+  }
+  .hidden-note button { margin-left: auto; border: 0; background: none; color: inherit; font-weight: 600; cursor: pointer; text-decoration: underline; }
+  .tip { margin: -4px 0 18px; font-size: 12.5px; line-height: 1.7; color: var(--text-2); }
+  .tip code {
+    padding: 0 4px; border-radius: 4px; background: var(--surface-2); border: 1px solid var(--border);
+    font: 12px ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  /* ---------- Fields ---------- */
+  .field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; min-width: 0; }
+  .field-label { font-size: 12px; font-weight: 600; color: var(--text-2); }
+  .field-hint { font-size: 12px; color: var(--muted); }
+  .input {
+    width: 100%; padding: 8px 10px; border-radius: 8px;
+    border: 1px solid var(--border-strong); background: var(--surface); color: var(--text);
+    font: inherit; transition: border-color .12s, box-shadow .12s;
+  }
+  textarea.input { resize: none; overflow: hidden; min-height: 38px; display: block; }
+  .input::placeholder { color: var(--muted); }
+  .input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; column-gap: 12px; }
+  .grid-link { display: grid; grid-template-columns: 150px 1fr; column-gap: 12px; }
+  .subhead { margin: 4px 0 8px; font-size: 12px; font-weight: 600; color: var(--text-2); }
+
+  /* ---------- Cards ---------- */
+  .card {
+    margin-bottom: 12px; border-radius: var(--radius);
+    background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
+  }
+  .card-head { display: flex; align-items: center; gap: 2px; padding: 5px 6px 5px 4px; }
+  .card-toggle {
+    flex: 1; display: flex; align-items: center; gap: 6px; min-width: 0;
+    padding: 6px; border: 0; border-radius: 6px; background: none;
+    font-weight: 600; text-align: left; cursor: pointer;
+  }
+  .card-toggle svg { color: var(--muted); transition: transform .15s; }
+  .card-toggle[aria-expanded="true"] svg { transform: rotate(90deg); }
+  .card-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .card-title.placeholder { color: var(--muted); font-weight: 500; }
+  .card-body { padding: 14px 16px 4px; border-top: 1px solid var(--border); }
+  .card.collapsed .card-body { display: none; }
+  .card-actions { display: flex; }
+
+  .icon-btn {
+    display: grid; place-items: center; width: 30px; height: 30px;
+    border: 0; border-radius: 6px; background: none; color: var(--text-2); cursor: pointer;
+  }
+  .icon-btn:hover:not(:disabled) { background: var(--surface-2); color: var(--text); }
+  .icon-btn.danger:hover:not(:disabled) { background: var(--danger-soft); color: var(--danger); }
+  .icon-btn:disabled { opacity: .3; cursor: default; }
+
+  .add-btn {
+    display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%;
+    padding: 10px; border: 1px dashed var(--border-strong); border-radius: var(--radius);
+    background: none; color: var(--text-2); font-weight: 500; cursor: pointer;
+  }
+  .add-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+  .add-btn.inline { width: auto; justify-content: flex-start; padding: 6px 8px; border: 0; margin: 0 0 12px 6px; }
+  .empty { margin: 0 0 12px; padding: 16px; text-align: center; color: var(--muted); border-radius: var(--radius); background: var(--surface-2); }
+
+  /* ---------- Bullets ---------- */
+  .bullet { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .bullet-dot { width: 5px; height: 5px; margin: 17px 2px 0 4px; border-radius: 50%; background: var(--muted); flex-shrink: 0; }
+  .bullet .input { flex: 1; }
+  .bullet-actions { display: flex; padding-top: 4px; opacity: 0; transition: opacity .12s; }
+  .bullet:hover .bullet-actions, .bullet:focus-within .bullet-actions { opacity: 1; }
+  @media (hover: none) { .bullet-actions { opacity: 1; } }
+
+  /* ---------- Layout tab ---------- */
+  .section-row {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 8px; padding: 8px 8px 8px 14px;
+    border-radius: var(--radius); background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
+  }
+  .section-row .order { width: 16px; color: var(--muted); font-variant-numeric: tabular-nums; font-size: 12px; }
+  .section-row .input { flex: 1; }
+  .section-row.is-hidden .input { color: var(--muted); }
+  .switch { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
+  .switch input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+  .switch span { position: absolute; inset: 0; border-radius: 999px; background: var(--border-strong); transition: background .15s; pointer-events: none; }
+  .switch span::after {
+    content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%;
+    background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, .2); transition: transform .15s;
+  }
+  .switch input:checked + span { background: var(--accent); }
+  .switch input:checked + span::after { transform: translateX(16px); }
+  .switch input:focus-visible + span { box-shadow: 0 0 0 3px var(--accent-soft); }
+
+  /* ---------- Preview ---------- */
+  .preview { display: flex; flex-direction: column; min-height: 0; background: var(--preview-bg); }
+  .preview-bar {
+    display: flex; align-items: center; gap: 10px; height: 45px; padding: 0 16px; flex-shrink: 0;
+    background: var(--surface); border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text-2);
+  }
+  .preview-bar strong { color: var(--text); font-weight: 600; }
+  .preview-bar a { display: inline-flex; align-items: center; gap: 6px; color: var(--text-2); text-decoration: none; }
+  .preview-bar a:hover { color: var(--accent); }
+  .preview-frame { position: relative; flex: 1; min-height: 0; }
+  .preview-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .preview-empty { position: absolute; inset: 0; display: grid; place-content: center; gap: 4px; text-align: center; color: var(--text-2); }
+  .preview-empty strong { color: var(--text); font-size: 15px; }
+  .progress { position: absolute; top: 0; left: 0; right: 0; height: 2px; overflow: hidden; z-index: 1; }
+  .progress::after {
+    content: ""; position: absolute; top: 0; bottom: 0; width: 35%; background: var(--accent);
+    animation: slide 1s ease-in-out infinite;
+  }
+  @keyframes slide { from { left: -35%; } to { left: 100%; } }
+  .warnings { padding: 8px 16px; background: var(--warn-soft); color: var(--warn); font-size: 12.5px; border-bottom: 1px solid var(--border); }
+  .error-panel { max-height: 45%; overflow: auto; padding: 12px 16px 16px; background: var(--surface); border-top: 1px solid var(--border); }
+  .error-panel header { display: flex; align-items: center; gap: 8px; color: var(--danger); font-weight: 600; }
+  .error-panel header button { margin-left: auto; }
+  .error-panel pre {
+    margin: 8px 0 0; padding: 10px 12px; border-radius: 8px; background: var(--surface-2); color: var(--text);
+    font: 12px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap;
+  }
+
+  /* ---------- Toast ---------- */
+  .toast {
+    position: fixed; left: 50%; bottom: 24px; z-index: 10; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 14px; padding: 10px 12px 10px 16px; border-radius: 10px;
+    background: var(--text); color: var(--bg); font-size: 13px; box-shadow: 0 8px 24px rgba(0, 0, 0, .2);
+  }
+  .toast button { border: 0; background: none; color: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; }
+
+  [hidden] { display: none !important; }
+
+  @media (max-width: 960px) {
+    html, body { height: auto; }
+    .workspace { display: block; }
+    .editor { border-right: 0; }
+    .panel { overflow: visible; padding-bottom: 32px; }
+    .preview { height: 85vh; border-top: 1px solid var(--border); }
+    .topbar { position: sticky; top: 0; z-index: 5; padding: 0 12px; gap: 8px; }
+    .btn-label, .status-text, .brand-name { display: none; }
+    .btn { padding: 0 11px; }
+    .grid-2, .grid-link { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>LaTeX Resume Editor</h1>
-        
-        <div class="tabs">
-            {% for section in sections %}
-            <button class="tab" onclick="loadSection('{{ section }}')">{{ section.title() }}</button>
-            {% endfor %}
-        </div>
-        
-        <div class="buttons">
-            <button class="save" onclick="saveFile()">Save</button>
-            <button class="generate" onclick="generatePDF()">Generate PDF</button>
-            <button class="download" onclick="downloadPDF()">Download PDF</button>
-        </div>
-        
-        <div id="message"></div>
-        
-        <textarea id="editor" class="editor" placeholder="Select a section to edit..."></textarea>
-    </div>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">R</span><span class="brand-name">Resume Studio</span></div>
+    <span class="status" id="status" data-state="saved" role="status">
+      <span class="dot"></span><span class="status-text" id="status-text">Loading…</span>
+    </span>
+    <span class="spacer"></span>
+    <a class="btn" href="/resume.pdf?download=1" title="Download PDF">
+      <svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span class="btn-label">Download</span>
+    </a>
+    <button class="btn btn-primary" id="save" type="button" title="Save and rebuild the PDF (Ctrl+S)">
+      <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="btn-label">Save &amp; build</span><kbd class="btn-label">Ctrl S</kbd>
+    </button>
+  </header>
 
-    <script>
-        let currentSection = '';
-        
-        function loadSection(section) {
-            currentSection = section;
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            fetch(`/get_file/${section}`)
-                .then(r => r.json())
-                .then(data => {
-                    if (data.content) {
-                        document.getElementById('editor').value = data.content;
-                    } else {
-                        showMessage('Error loading file: ' + data.error, 'error');
-                    }
-                });
+  <main class="workspace">
+    <section class="editor" aria-label="Editor">
+      <nav class="tabs" id="tabs" role="tablist"></nav>
+      <div class="panel" id="panel" role="tabpanel"></div>
+    </section>
+
+    <section class="preview" aria-label="PDF preview">
+      <div class="preview-bar">
+        <strong>Preview</strong>
+        <span id="build-meta"></span>
+        <span class="spacer"></span>
+        <a href="/resume.pdf" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg>Open
+        </a>
+      </div>
+      <div class="warnings" id="warnings" hidden></div>
+      <div class="preview-frame">
+        <div class="progress" id="progress" hidden></div>
+        <iframe id="pdf" title="Resume PDF" hidden></iframe>
+        <div class="preview-empty" id="preview-empty" hidden>
+          <strong>No PDF yet</strong>
+          <span>Press Save &amp; build to generate it.</span>
+        </div>
+      </div>
+      <div class="error-panel" id="error-panel" hidden>
+        <header>
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+          <span id="error-title">Build failed</span>
+          <button class="icon-btn" id="error-close" type="button" aria-label="Dismiss">
+            <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </header>
+        <pre id="error-log"></pre>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" hidden></div>
+
+<script>
+const ICONS = {
+  up: '<path d="M6 15l6-6 6 6"/>',
+  down: '<path d="M6 9l6 6 6-6"/>',
+  trash: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 002 2h6a2 2 0 002-2l1-12M9 7V4h6v3"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  chevron: '<path d="M9 6l6 6-6 6"/>',
+  eyeOff: '<path d="M3 3l18 18M10.6 5.1A10.8 10.8 0 0112 5c6.5 0 10 7 10 7a17.6 17.6 0 01-3.2 4.2M6.6 6.6C3.8 8.4 2 12 2 12s3.5 7 10 7c1.8 0 3.4-.5 4.8-1.3M9.9 9.9a3 3 0 004.2 4.2"/>',
+};
+
+const LINK_ICONS = [
+  ['globe', 'Website'], ['linkedin', 'LinkedIn'], ['github', 'GitHub'], ['gitlab', 'GitLab'],
+  ['twitter', 'Twitter / X'], ['stackoverflow', 'Stack Overflow'], ['medium', 'Medium'], ['link', 'Other'],
+];
+
+const SECTIONS = {
+  summary:      { label: 'Summary',      blurb: 'A short paragraph at the top of the resume.' },
+  skills:       { label: 'Skills',       blurb: 'One line per category.' },
+  projects:     { label: 'Projects',     blurb: 'Each project is printed as a single bullet.' },
+  experience:   { label: 'Experience',   blurb: 'Roles, most recent first.' },
+  achievements: { label: 'Achievements', blurb: 'One bullet per achievement.' },
+  education:    { label: 'Education',    blurb: 'Degrees and institutions.' },
+};
+
+const state = { data: null, tab: 'profile', version: 0, savedVersion: 0, building: false, failed: false };
+const collapsed = new WeakSet();
+
+const $ = id => document.getElementById(id);
+
+//-------------------------------------------------------------------------------
+// DOM helpers
+//-------------------------------------------------------------------------------
+function el(tag, props = {}, ...children) {
+  const node = document.createElement(tag);
+  for (const [key, value] of Object.entries(props)) {
+    if (value == null || value === false) continue;
+    if (key === 'class') node.className = value;
+    else if (key === 'html') node.innerHTML = value;
+    else if (key === 'value' || key === 'checked' || key === 'disabled') node[key] = value;
+    else if (key.startsWith('on')) node.addEventListener(key.slice(2), value);
+    else node.setAttribute(key, value === true ? '' : value);
+  }
+  for (const child of children.flat()) {
+    if (child != null && child !== false) node.append(child);
+  }
+  return node;
+}
+
+const svg = name => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]}</svg>`;
+
+function iconButton(name, label, onclick, { disabled = false, danger = false } = {}) {
+  return el('button', {
+    type: 'button', class: 'icon-btn' + (danger ? ' danger' : ''),
+    title: label, 'aria-label': label, html: svg(name), disabled, onclick,
+  });
+}
+
+function fitTextarea(ta) {
+  ta.style.height = 'auto';
+  ta.style.height = ta.scrollHeight + 2 + 'px';
+}
+
+function autoGrow(ta) {
+  ta.addEventListener('input', () => fitTextarea(ta));
+  requestAnimationFrame(() => fitTextarea(ta));
+  return ta;
+}
+
+function refit(root) {
+  root.querySelectorAll('textarea').forEach(fitTextarea);
+}
+
+function textField(label, obj, key, { multiline = false, placeholder = '', hint = '', type = 'text', rows = 2 } = {}) {
+  const input = multiline
+    ? autoGrow(el('textarea', { class: 'input', rows, placeholder }))
+    : el('input', { class: 'input', type, placeholder });
+  input.value = obj[key] ?? '';
+  input.addEventListener('input', () => { obj[key] = input.value; markDirty(); });
+  return el('label', { class: 'field' },
+    el('span', { class: 'field-label' }, label),
+    input,
+    hint && el('span', { class: 'field-hint' }, hint));
+}
+
+function selectField(label, obj, key, options) {
+  const select = el('select', { class: 'input' },
+    options.map(([value, text]) => el('option', { value }, text)));
+  select.value = obj[key] || options[0][0];
+  select.addEventListener('change', () => { obj[key] = select.value; markDirty(); });
+  return el('label', { class: 'field' }, el('span', { class: 'field-label' }, label), select);
+}
+
+function tip(html) {
+  return el('p', { class: 'tip', html });
+}
+
+//-------------------------------------------------------------------------------
+// Collection editors
+//-------------------------------------------------------------------------------
+function removeWithUndo(arr, index, redraw, what) {
+  const [item] = arr.splice(index, 1);
+  markDirty();
+  redraw();
+  toast(`${what} removed`, 'Undo', () => {
+    arr.splice(Math.min(index, arr.length), 0, item);
+    markDirty();
+    redraw();
+  });
+}
+
+function listEditor(arr, { renderItem, create, title, addLabel, noun, empty }) {
+  const wrap = el('div', { class: 'list' });
+
+  const move = (i, delta) => {
+    const j = i + delta;
+    if (j < 0 || j >= arr.length) return;
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+    markDirty();
+    draw();
+  };
+
+  function draw(focusIndex) {
+    wrap.replaceChildren();
+    arr.forEach((item, i) => {
+      const titleEl = el('span', { class: 'card-title' });
+      const updateTitle = () => {
+        const text = title(item).trim();
+        titleEl.textContent = text || `Untitled ${noun.toLowerCase()}`;
+        titleEl.classList.toggle('placeholder', !text);
+      };
+      updateTitle();
+
+      const isCollapsed = collapsed.has(item);
+      const body = el('div', { class: 'card-body' }, renderItem(item));
+      const toggle = el('button', {
+        type: 'button', class: 'card-toggle', 'aria-expanded': String(!isCollapsed),
+        onclick: () => {
+          const nowCollapsed = card.classList.toggle('collapsed');
+          toggle.setAttribute('aria-expanded', String(!nowCollapsed));
+          if (nowCollapsed) collapsed.add(item);
+          else { collapsed.delete(item); refit(body); }
+        },
+      });
+      toggle.innerHTML = svg('chevron');
+      toggle.append(titleEl);
+
+      const card = el('div', { class: 'card' + (isCollapsed ? ' collapsed' : ''), oninput: updateTitle },
+        el('div', { class: 'card-head' },
+          toggle,
+          el('div', { class: 'card-actions' },
+            iconButton('up', 'Move up', () => move(i, -1), { disabled: i === 0 }),
+            iconButton('down', 'Move down', () => move(i, 1), { disabled: i === arr.length - 1 }),
+            iconButton('trash', `Remove ${noun.toLowerCase()}`, () => removeWithUndo(arr, i, draw, noun), { danger: true }))),
+        body);
+      wrap.append(card);
+    });
+
+    if (!arr.length) wrap.append(el('p', { class: 'empty' }, empty));
+    wrap.append(el('button', {
+      type: 'button', class: 'add-btn', html: svg('plus'),
+      onclick: () => { arr.push(create()); markDirty(); draw(arr.length - 1); },
+    }, addLabel));
+
+    if (focusIndex != null) {
+      const card = wrap.children[focusIndex];
+      card.querySelector('input, textarea')?.focus();
+      card.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }
+
+  draw();
+  return wrap;
+}
+
+function bulletsEditor(arr, { placeholder = 'Describe what you did and the impact…', addLabel = 'Add bullet', noun = 'Bullet' } = {}) {
+  const wrap = el('div', { class: 'bullets' });
+
+  const move = (i, delta) => {
+    const j = i + delta;
+    if (j < 0 || j >= arr.length) return;
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+    markDirty();
+    draw(j);
+  };
+
+  function draw(focusIndex) {
+    wrap.replaceChildren();
+    arr.forEach((text, i) => {
+      const ta = autoGrow(el('textarea', { class: 'input', rows: 1, placeholder, 'aria-label': `${noun} ${i + 1}` }));
+      ta.value = text;
+      ta.addEventListener('input', () => {
+        if (ta.value.includes('\n')) ta.value = ta.value.replace(/\s*\n\s*/g, ' ');
+        arr[i] = ta.value;
+        markDirty();
+      });
+      ta.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && !e.isComposing) {
+          e.preventDefault();
+          arr.splice(i + 1, 0, '');
+          markDirty();
+          draw(i + 1);
+        } else if (e.key === 'Backspace' && ta.value === '') {
+          e.preventDefault();
+          arr.splice(i, 1);
+          markDirty();
+          draw(Math.max(0, i - 1));
+        } else if (e.altKey && e.key === 'ArrowUp') {
+          e.preventDefault();
+          move(i, -1);
+        } else if (e.altKey && e.key === 'ArrowDown') {
+          e.preventDefault();
+          move(i, 1);
         }
-        
-        function saveFile() {
-            if (!currentSection) {
-                showMessage('Please select a section first', 'error');
-                return;
-            }
-            
-            const content = document.getElementById('editor').value;
-            fetch(`/save_file/${currentSection}`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({content})
-            })
-            .then(r => r.json())
-            .then(data => {
-                if (data.success) {
-                    showMessage('File saved successfully', 'success');
-                } else {
-                    showMessage('Error saving file: ' + data.error, 'error');
-                }
-            });
-        }
-        
-        function generatePDF() {
-            showMessage('Generating PDF...', 'success');
-            fetch('/generate_pdf', {method: 'POST'})
-                .then(r => r.json())
-                .then(data => {
-                    if (data.success) {
-                        showMessage('PDF generated successfully', 'success');
-                    } else {
-                        showMessage('Error generating PDF: ' + data.error, 'error');
-                    }
-                });
-        }
-        
-        function downloadPDF() {
-            window.open('/download_pdf', '_blank');
-        }
-        
-        function showMessage(text, type) {
-            const msg = document.getElementById('message');
-            msg.textContent = text;
-            msg.className = `message ${type}`;
-            setTimeout(() => msg.textContent = '', 3000);
-        }
-        
-        // Load first section by default
-        if (document.querySelector('.tab')) {
-            document.querySelector('.tab').click();
-        }
-    </script>
+      });
+      wrap.append(el('div', { class: 'bullet' },
+        el('span', { class: 'bullet-dot', 'aria-hidden': 'true' }),
+        ta,
+        el('div', { class: 'bullet-actions' },
+          iconButton('up', 'Move up', () => move(i, -1), { disabled: i === 0 }),
+          iconButton('down', 'Move down', () => move(i, 1), { disabled: i === arr.length - 1 }),
+          iconButton('trash', `Remove ${noun.toLowerCase()}`, () => removeWithUndo(arr, i, draw, noun), { danger: true }))));
+    });
+
+    wrap.append(el('button', {
+      type: 'button', class: 'add-btn inline', html: svg('plus'),
+      onclick: () => { arr.push(''); markDirty(); draw(arr.length - 1); },
+    }, addLabel));
+
+    if (focusIndex != null) {
+      const ta = wrap.querySelectorAll('textarea')[focusIndex];
+      if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+    }
+  }
+
+  draw();
+  return wrap;
+}
+
+//-------------------------------------------------------------------------------
+// Panels
+//-------------------------------------------------------------------------------
+const BOLD_TIP = 'Wrap words in <code>**double asterisks**</code> to make them <b>bold</b>. In a bullet, <code>Enter</code> starts a new one and <code>Alt ↑/↓</code> reorders.';
+
+function panelHead(title, blurb) {
+  return el('div', { class: 'panel-head' }, el('div', {}, el('h2', {}, title), el('p', {}, blurb)));
+}
+
+function hiddenNote(section) {
+  if (section.visible) return null;
+  return el('div', { class: 'hidden-note', html: svg('eyeOff') },
+    el('span', {}, 'This section is hidden from the resume.'),
+    el('button', { type: 'button', onclick: () => { section.visible = true; markDirty(); renderPanel(); } }, 'Show it'));
+}
+
+const PANELS = {
+  profile(d) {
+    const h = d.header;
+    return [
+      panelHead('Profile', 'Your name and contact details, centred at the top.'),
+      textField('Full name', h, 'name', { placeholder: 'Jane Doe' }),
+      el('div', { class: 'grid-2' },
+        textField('Phone', h, 'phone', { type: 'tel', placeholder: '+91 98765 43210' }),
+        textField('Email', h, 'email', { type: 'email', placeholder: 'you@example.com' })),
+      el('div', { class: 'subhead' }, 'Links'),
+      listEditor(h.links, {
+        noun: 'Link',
+        addLabel: 'Add link',
+        empty: 'No links yet.',
+        create: () => ({ icon: 'link', url: '', text: '' }),
+        title: l => l.url ? `${LINK_ICONS.find(([k]) => k === l.icon)?.[1] ?? 'Link'} · ${l.text || l.url}` : '',
+        renderItem: l => [
+          el('div', { class: 'grid-link' },
+            selectField('Icon', l, 'icon', LINK_ICONS),
+            textField('URL', l, 'url', { type: 'url', placeholder: 'https://…' })),
+          textField('Display text', l, 'text', { placeholder: 'Leave blank to show the URL' }),
+        ],
+      }),
+    ];
+  },
+
+  summary(d, section) {
+    return [
+      panelHead(section.title || 'Summary', SECTIONS.summary.blurb),
+      hiddenNote(section),
+      tip(BOLD_TIP.split('. In a bullet')[0] + '. Leave a blank line to start a new paragraph.'),
+      textField('Summary', d, 'summary', { multiline: true, rows: 5, placeholder: 'Senior engineer who…' }),
+    ];
+  },
+
+  skills(d, section) {
+    return [
+      panelHead(section.title || 'Skills', SECTIONS.skills.blurb),
+      hiddenNote(section),
+      listEditor(d.skills, {
+        noun: 'Category',
+        addLabel: 'Add category',
+        empty: 'No skills yet.',
+        create: () => ({ category: '', items: '' }),
+        title: s => s.category || '',
+        renderItem: s => [
+          textField('Category', s, 'category', { placeholder: 'Languages' }),
+          textField('Skills', s, 'items', { multiline: true, placeholder: 'Python, TypeScript, SQL', hint: 'Comma-separated, printed exactly as typed.' }),
+        ],
+      }),
+    ];
+  },
+
+  projects(d, section) {
+    return [
+      panelHead(section.title || 'Projects', SECTIONS.projects.blurb),
+      hiddenNote(section),
+      tip(BOLD_TIP.split('. In a bullet')[0] + '.'),
+      listEditor(d.projects, {
+        noun: 'Project',
+        addLabel: 'Add project',
+        empty: 'No projects yet.',
+        create: () => ({ name: '', url: '', description: '' }),
+        title: p => p.name || '',
+        renderItem: p => [
+          el('div', { class: 'grid-2' },
+            textField('Name', p, 'name', { placeholder: 'Project name' }),
+            textField('Link', p, 'url', { type: 'url', placeholder: 'Optional' })),
+          textField('Description', p, 'description', { multiline: true, placeholder: 'What it does and what you used' }),
+        ],
+      }),
+    ];
+  },
+
+  experience(d, section) {
+    return [
+      panelHead(section.title || 'Experience', SECTIONS.experience.blurb),
+      hiddenNote(section),
+      tip(BOLD_TIP),
+      listEditor(d.experience, {
+        noun: 'Role',
+        addLabel: 'Add role',
+        empty: 'No roles yet.',
+        create: () => ({ organization: '', role: '', date: '', location: '', bullets: [''] }),
+        title: j => [j.organization, j.role].filter(Boolean).join(' — '),
+        renderItem: j => [
+          el('div', { class: 'grid-2' },
+            textField('Company', j, 'organization', { placeholder: 'Company' }),
+            textField('Job title', j, 'role', { placeholder: 'Software Engineer' }),
+            textField('Dates', j, 'date', { placeholder: 'Jan. 2024 – Present' }),
+            textField('Location', j, 'location', { placeholder: 'Optional' })),
+          el('div', { class: 'subhead' }, 'Highlights'),
+          bulletsEditor(j.bullets),
+        ],
+      }),
+    ];
+  },
+
+  achievements(d, section) {
+    return [
+      panelHead(section.title || 'Achievements', SECTIONS.achievements.blurb),
+      hiddenNote(section),
+      tip(BOLD_TIP),
+      bulletsEditor(d.achievements, { placeholder: 'An award, role or milestone…', addLabel: 'Add achievement', noun: 'Achievement' }),
+    ];
+  },
+
+  education(d, section) {
+    return [
+      panelHead(section.title || 'Education', SECTIONS.education.blurb),
+      hiddenNote(section),
+      listEditor(d.education, {
+        noun: 'School',
+        addLabel: 'Add education',
+        empty: 'No education yet.',
+        create: () => ({ institution: '', degree: '', date: '', location: '', bullets: [] }),
+        title: s => s.institution || '',
+        renderItem: s => [
+          el('div', { class: 'grid-2' },
+            textField('Institution', s, 'institution', { placeholder: 'University name' }),
+            textField('Degree & grade', s, 'degree', { placeholder: 'B.Tech, CGPA: 8.7/10' }),
+            textField('Dates', s, 'date', { placeholder: '2019 – 2023' }),
+            textField('Location', s, 'location', { placeholder: 'City, State' })),
+          el('div', { class: 'subhead' }, 'Details (optional)'),
+          bulletsEditor(s.bullets, { placeholder: 'Coursework, thesis, honours…', addLabel: 'Add detail', noun: 'Detail' }),
+        ],
+      }),
+    ];
+  },
+
+  layout(d) {
+    const list = el('div');
+    const draw = () => {
+      list.replaceChildren();
+      d.sections.forEach((section, i) => {
+        const title = el('input', { class: 'input', type: 'text', value: section.title, 'aria-label': `${SECTIONS[section.id].label} heading` });
+        title.addEventListener('input', () => { section.title = title.value; markDirty(); });
+        const visible = el('input', { type: 'checkbox', checked: section.visible, 'aria-label': `Show ${SECTIONS[section.id].label}` });
+        visible.addEventListener('change', () => { section.visible = visible.checked; row.classList.toggle('is-hidden', !visible.checked); markDirty(); });
+        const move = delta => {
+          const j = i + delta;
+          [d.sections[i], d.sections[j]] = [d.sections[j], d.sections[i]];
+          markDirty();
+          draw();
+        };
+        const row = el('div', { class: 'section-row' + (section.visible ? '' : ' is-hidden') },
+          el('span', { class: 'order' }, i + 1),
+          title,
+          el('label', { class: 'switch', title: 'Show on resume' }, visible, el('span')),
+          iconButton('up', 'Move up', () => move(-1), { disabled: i === 0 }),
+          iconButton('down', 'Move down', () => move(1), { disabled: i === d.sections.length - 1 }));
+        list.append(row);
+      });
+    };
+    draw();
+    return [
+      panelHead('Layout', 'Section order, headings and visibility. The profile header always comes first.'),
+      list,
+    ];
+  },
+};
+
+//-------------------------------------------------------------------------------
+// Rendering
+//-------------------------------------------------------------------------------
+function tabList() {
+  return [
+    { id: 'profile', label: 'Profile' },
+    ...state.data.sections.map(s => ({ id: s.id, label: SECTIONS[s.id].label, section: s })),
+    { id: 'layout', label: 'Layout' },
+  ];
+}
+
+function countFor(id) {
+  const value = state.data[id];
+  return Array.isArray(value) ? value.length : null;
+}
+
+function renderTabs() {
+  const tabs = $('tabs');
+  tabs.replaceChildren(...tabList().map(t => {
+    const count = countFor(t.id);
+    return el('button', {
+      type: 'button', role: 'tab', class: 'tab' + (t.section && !t.section.visible ? ' is-hidden' : ''),
+      'aria-selected': String(state.tab === t.id),
+      title: t.section && !t.section.visible ? 'Hidden from resume' : null,
+      onclick: () => {
+        state.tab = t.id;
+        history.replaceState(null, '', '#' + t.id);
+        renderTabs();
+        renderPanel();
+      },
+    }, el('span', { class: 'tab-label' }, t.label), count != null && el('span', { class: 'count' }, count));
+  }));
+}
+
+function renderPanel() {
+  const panel = $('panel');
+  const section = state.data.sections.find(s => s.id === state.tab);
+  panel.replaceChildren(...[PANELS[state.tab](state.data, section)].flat().filter(Boolean));
+  panel.scrollTop = 0;
+  requestAnimationFrame(() => refit(panel));
+}
+
+//-------------------------------------------------------------------------------
+// Status, preview and saving
+//-------------------------------------------------------------------------------
+function markDirty() {
+  state.version++;
+  updateStatus();
+  renderTabs();
+}
+
+const isDirty = () => state.version !== state.savedVersion;
+
+function updateStatus(message) {
+  let s = 'saved', text = message || 'All changes saved';
+  if (state.building) { s = 'building'; text = 'Building PDF…'; }
+  else if (state.failed) { s = 'error'; text = message || 'Build failed'; }
+  else if (isDirty()) { s = 'dirty'; text = 'Unsaved changes'; }
+  $('status').dataset.state = s;
+  $('status-text').textContent = text;
+  $('save').disabled = state.building;
+  $('progress').hidden = !state.building;
+}
+
+function showBuildMeta(build) {
+  if (!build) { $('build-meta').textContent = ''; return; }
+  const parts = [];
+  if (build.pages) parts.push(`${build.pages} page${build.pages === 1 ? '' : 's'}`);
+  if (build.built_at) parts.push('built ' + new Date(build.built_at * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+  if (build.seconds != null) parts.push(`in ${build.seconds}s`);
+  $('build-meta').textContent = parts.join(' · ');
+  const warnings = build.warnings || [];
+  $('warnings').hidden = !warnings.length;
+  $('warnings').textContent = warnings.join(' ');
+}
+
+function reloadPreview() {
+  $('preview-empty').hidden = true;
+  $('pdf').hidden = false;
+  $('pdf').src = `/resume.pdf?v=${Date.now()}#view=FitH`;
+}
+
+function showError(title, log) {
+  $('error-title').textContent = title;
+  $('error-log').textContent = log || '';
+  $('error-log').hidden = !log;
+  $('error-panel').hidden = false;
+}
+
+async function save() {
+  if (state.building || !state.data) return;
+  const version = state.version;
+  state.building = true;
+  state.failed = false;
+  $('error-panel').hidden = true;
+  updateStatus();
+
+  let message;
+  try {
+    const res = await fetch('/api/resume', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(state.data),
+    });
+    const result = await res.json();
+    // The data is saved even when LaTeX fails, so the edits are never lost.
+    if (res.status !== 400) state.savedVersion = version;
+    if (result.ok) {
+      showBuildMeta(result);
+      reloadPreview();
+    } else {
+      state.failed = true;
+      message = 'Saved, but the build failed';
+      showError(result.error || 'Build failed', result.log);
+    }
+  } catch (err) {
+    state.failed = true;
+    message = "Couldn't reach the server";
+    showError("Couldn't reach the server", 'Is `python app.py` still running?\n\n' + err);
+  } finally {
+    state.building = false;
+    updateStatus(message);
+  }
+}
+
+let toastTimer;
+function toast(text, actionLabel, action) {
+  const t = $('toast');
+  clearTimeout(toastTimer);
+  t.replaceChildren(el('span', {}, text),
+    actionLabel && el('button', { type: 'button', onclick: () => { t.hidden = true; action(); } }, actionLabel));
+  t.hidden = false;
+  toastTimer = setTimeout(() => { t.hidden = true; }, 6000);
+}
+
+//-------------------------------------------------------------------------------
+// Boot
+//-------------------------------------------------------------------------------
+$('save').addEventListener('click', save);
+$('error-close').addEventListener('click', () => { $('error-panel').hidden = true; });
+
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+    e.preventDefault();
+    save();
+  }
+});
+
+window.addEventListener('beforeunload', e => {
+  if (isDirty()) { e.preventDefault(); e.returnValue = ''; }
+});
+
+window.addEventListener('resize', () => refit($('panel')));
+
+(async function init() {
+  try {
+    const [data, status] = await Promise.all([
+      fetch('/api/resume').then(r => r.json()),
+      fetch('/api/status').then(r => r.json()),
+    ]);
+    state.data = data;
+    const fromHash = location.hash.slice(1);
+    if (tabList().some(t => t.id === fromHash)) state.tab = fromHash;
+    renderTabs();
+    renderPanel();
+    updateStatus();
+    showBuildMeta(status.last_build);
+    if (status.pdf) reloadPreview();
+    else $('preview-empty').hidden = false;
+  } catch (err) {
+    state.failed = true;
+    updateStatus("Couldn't load resume");
+    showError("Couldn't load resume.json", String(err));
+  }
+})();
+</script>
 </body>
 </html>
