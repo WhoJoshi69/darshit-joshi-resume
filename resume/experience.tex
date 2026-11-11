@@ -7,9 +7,14 @@
   {Sr. Software Engineer}
   {}
 \begin{itemize}
-  \item \textbf{Smart Call Assistant:} Developed AI-powered call assistant integrating \textbf{ElevenLabs TTS}, \textbf{AWS Transcribe STT}, \textbf{Amazon Bedrock LLM}, and \textbf{OpenSearch} for knowledge base. Implemented features for Google Calendar booking, availability lookup, and real estate broker website building.
-  \item \textbf{Medical RAG SMS Chatbot:} Built medical domain RAG chatbot using \textbf{Twilio} with comprehensive issue escalation, tracking, and follow-up capabilities for healthcare communication.
-  \item \textbf{Gaming Character Generation:} Created text-to-image and image-to-image generation system for consistent character creation in gaming industry using \textbf{SageMaker}, \textbf{ComfyUI}, and \textbf{Qwen image edit models}.
+  \item Served as \textbf{Solution Architect} and \textbf{Senior Software Engineer}, owning end-to-end system design for \textbf{4} client-facing production projects and leading delivery on \textbf{3}; shipped \textbf{6+ POCs} in 4–8 week cycles, mentored a 6-month intern cohort, and sat on hiring panels for campus and senior engineering recruitment.
+  \item Designed and trained a CTR-optimization model for an ad agency using \textbf{XGBoost} and \textbf{MCMC}-based Bayesian inference, driving feature engineering and an end-to-end \textbf{MLOps pipeline} on \textbf{AWS SageMaker} for training, evaluation, and deployment.
+  \item Built a real-time AI voice agent for a Florida-based real estate company handling \textbf{10K+ calls/month} and \textbf{500+ bookings/month} at \textbf{sub-500ms} response latency; automates appointment booking, availability checks, and live pricing via web scraping with guideline-driven case handling, powered by \textbf{AWS Bedrock}, \textbf{Amazon Nova Sonic}, \textbf{AWS Transcribe}, and \textbf{ElevenLabs} TTS.
+  \item Built a GPU-accelerated generative image pipeline for a client on \textbf{Stable Diffusion} and \textbf{AWS EC2 GPU} instances, fine-tuning \textbf{4 custom LoRA} adapters with custom \textbf{VAEs} and checkpoint management; \textbf{CUDA}-optimized inference delivered \textbf{20+ images/min} at \textbf{70\% lower cost}.
+  \item Built an image-to-image generation system for a gaming company that preserves character identity across poses and frames, orchestrating \textbf{ComfyUI} workflows with \textbf{Qwen} image models on \textbf{AWS SageMaker} endpoints to generate \textbf{20+ consistent character poses/frames per minute}.
+  \item Built a retrieval-augmented generation (\textbf{RAG}) patient-support assistant over \textbf{Twilio} SMS and voice, grounding \textbf{AWS Bedrock} LLM responses in an \textbf{OpenSearch} vector index; resolved \textbf{1K+ issues} with \textbf{85\%} (850+) handled without human escalation at \textbf{<2s} response time, plus automated escalation, ticket tracking, and follow-ups.
+  \item Engineered a \textbf{Bayesian optimization} framework with \textbf{Optuna} in \textbf{Python} on \textbf{AWS ECS} over \textbf{Snowflake} data, searching a trillion-plus space of detector-score threshold combinations; cached evaluations cut search time from years of brute force to \textbf{5–10 minutes} and produced business rules that \textbf{reduced false positives by 89\%}.
+  \item Built banking transaction-handling and data analytics pipelines for a bank client on \textbf{Oracle Cloud}, processing transaction data from \textbf{Sybase} and orchestrating batch workflows with \textbf{Control-M} to deliver reliable, scheduled analytics and reporting.
 \end{itemize}
 
 \resumeSubheading
@@ -18,12 +23,12 @@
   {Software Engineer}
   {}
 \begin{itemize}
-  \item \textbf{API Development:} Designed and implemented RESTful APIs to streamline business workflows, reduce response times by 50\%, and enhance system interoperability.
-  \item \textbf{Migration Automation:} Automated database migration processes, reducing deployment time by 40\% with version control across environments. Created and published PyPi library for the same.
-  \item \textbf{Data Engineering and Analytics:} Built ETL pipelines for \textbf{data pre-processing, feature engineering and validation} to support analytics. created daily performance statics for stakeholders
-  \item \textbf{Real-time Systems:} Developed real-time solutions using \textbf{WebSockets}, enabling bi-directional communication for features like \textbf{live updates}, \textbf{dynamic dashboards}, and \textbf{notification services}.
-  \item \textbf{Authentication Systems:} Designed and implemented secure authentication systems using token-based mechanisms \textbf{(JWT)} and role-based access control \textbf{(RBAC)}. Developed a seamless single sign-on \textbf{(SSO)} solution with \textbf{OAuth2.0 scopes}.
-  \item \textbf{Database Engineering:} Enhanced backend performance by designing a well-optimized SQL database, significantly improving storage utilization and system efficiency.
-  \item \textbf{Algorithm Optimization:} Optimized computationally intensive algorithms for \textbf{pack-filling slot customizations} and workflow optimizations.
-  \item \textbf{Centralized pharmacy traffic manager:} Designed and implemented middleware service to manage optimized filling with set of rules for multiple US based pharmacy and filling services to improve their efficiency.
+  \item Designed and shipped \textbf{FastAPI}-based \textbf{RESTful APIs} for on-premise pharmacy automation workflows, cutting response times by \textbf{50\%} through SQL query optimization, caching, and \textbf{async I/O}, and standardizing service contracts for interoperability across internal systems and partner pharmacies.
+  \item Built and published \textbf{dpws-migration-automation} on \textbf{PyPI}, automating version-controlled \textbf{PostgreSQL} schema migrations across dev, staging, and production via \textbf{CI} pipelines, cutting deployment time by \textbf{40\%} and keeping schemas consistent across environments.
+  \item Built \textbf{Python/Pandas} ETL pipelines scheduled via \textbf{cron} to ingest, cleanse, and transform pharmacy orders, robot telemetry, and pill-dispensing events, adding automated \textbf{validation} and \textbf{feature engineering}; automated daily performance reporting from \textbf{4 hours to 1 minute} for \textbf{7+ stakeholders} and \textbf{20+ senior leaders}.
+  \item Engineered event-driven real-time features with \textbf{FastAPI WebSockets} and \textbf{Redis pub/sub}, streaming bi-directional updates across \textbf{7+ robots and devices}; built \textbf{DPNS}, a notification service for robot error alerts and fill-progress tracking, alongside live order status and dynamic operational dashboards.
+  \item Designed and built a custom \textbf{HIPAA-compliant} auth service with \textbf{JWT} tokens, \textbf{RBAC}, and \textbf{OAuth 2.0} scope-based \textbf{SSO}, securing access across \textbf{5 microservices} and client-facing applications.
+  \item Redesigned the \textbf{PostgreSQL} data model with schema normalization, \textbf{materialized views}, and a data archival strategy, delivering \textbf{\textasciitilde{}60\% faster} queries and improved storage utilization.
+  \item Designed a constraint-aware \textbf{greedy algorithm} for pack-filling slot allocation in multi-dose medication packaging, replacing compute-intensive customization logic and improving robot fill-workflow throughput.
+  \item Architected a rules-driven middleware service with \textbf{FastAPI}, \textbf{RabbitMQ}, and \textbf{Celery} that routes and balances \textbf{10K+ fill orders/day} across \textbf{4 US-based pharmacies}, delivering an \textbf{80\% efficiency gain} and reducing robot idle time.
 \end{itemize}

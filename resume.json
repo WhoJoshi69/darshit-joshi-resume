@@ -1,26 +1,75 @@
 {
+  "achievements": [
+    "Training and Placement Coordinator at DDU (2023).",
+    "Interviewer for campus placement drives and senior roles at Armakuni.",
+    "Coordinator at DDU NSS club activities."
+  ],
+  "education": [
+    {
+      "bullets": [],
+      "date": "Jul. 2019 – May. 2023",
+      "degree": "B.Tech, CGPA: 8.72/10",
+      "institution": "Dharmsinh Desai University",
+      "location": "Nadiad, Gujarat"
+    }
+  ],
+  "experience": [
+    {
+      "bullets": [
+        "Served as **Solution Architect** and **Senior Software Engineer**, owning end-to-end system design for **4** client-facing production projects and leading delivery on **3**; shipped **6+ POCs** in 4–8 week cycles, mentored a 6-month intern cohort, and sat on hiring panels for campus and senior engineering recruitment.",
+        "Designed and trained a CTR-optimization model for an ad agency using **XGBoost** and **MCMC**-based Bayesian inference, driving feature engineering and an end-to-end **MLOps pipeline** on **AWS SageMaker** for training, evaluation, and deployment.",
+        "Built a real-time AI voice agent for a Florida-based real estate company handling **10K+ calls/month** and **500+ bookings/month** at **sub-500ms** response latency; automates appointment booking, availability checks, and live pricing via web scraping with guideline-driven case handling, powered by **AWS Bedrock**, **Amazon Nova Sonic**, **AWS Transcribe**, and **ElevenLabs** TTS.",
+        "Built a GPU-accelerated generative image pipeline for a client on **Stable Diffusion** and **AWS EC2 GPU** instances, fine-tuning **4 custom LoRA** adapters with custom **VAEs** and checkpoint management; **CUDA**-optimized inference delivered **20+ images/min** at **70% lower cost**.",
+        "Built an image-to-image generation system for a gaming company that preserves character identity across poses and frames, orchestrating **ComfyUI** workflows with **Qwen** image models on **AWS SageMaker** endpoints to generate **20+ consistent character poses/frames per minute**.",
+        "Built a retrieval-augmented generation (**RAG**) patient-support assistant over **Twilio** SMS and voice, grounding **AWS Bedrock** LLM responses in an **OpenSearch** vector index; resolved **1K+ issues** with **85%** (850+) handled without human escalation at **<2s** response time, plus automated escalation, ticket tracking, and follow-ups.",
+        "Engineered a **Bayesian optimization** framework with **Optuna** in **Python** on **AWS ECS** over **Snowflake** data, searching a trillion-plus space of detector-score threshold combinations; cached evaluations cut search time from years of brute force to **5–10 minutes** and produced business rules that **reduced false positives by 89%**.",
+        "Built banking transaction-handling and data analytics pipelines for a bank client on **Oracle Cloud**, processing transaction data from **Sybase** and orchestrating batch workflows with **Control-M** to deliver reliable, scheduled analytics and reporting."
+      ],
+      "date": "Mar. 2025 – Present",
+      "location": "",
+      "organization": "Armakuni",
+      "role": "Sr. Software Engineer"
+    },
+    {
+      "bullets": [
+        "Designed and shipped **FastAPI**-based **RESTful APIs** for on-premise pharmacy automation workflows, cutting response times by **50%** through SQL query optimization, caching, and **async I/O**, and standardizing service contracts for interoperability across internal systems and partner pharmacies.",
+        "Built and published **dpws-migration-automation** on **PyPI**, automating version-controlled **PostgreSQL** schema migrations across dev, staging, and production via **CI** pipelines, cutting deployment time by **40%** and keeping schemas consistent across environments.",
+        "Built **Python/Pandas** ETL pipelines scheduled via **cron** to ingest, cleanse, and transform pharmacy orders, robot telemetry, and pill-dispensing events, adding automated **validation** and **feature engineering**; automated daily performance reporting from **4 hours to 1 minute** for **7+ stakeholders** and **20+ senior leaders**.",
+        "Engineered event-driven real-time features with **FastAPI WebSockets** and **Redis pub/sub**, streaming bi-directional updates across **7+ robots and devices**; built **DPNS**, a notification service for robot error alerts and fill-progress tracking, alongside live order status and dynamic operational dashboards.",
+        "Designed and built a custom **HIPAA-compliant** auth service with **JWT** tokens, **RBAC**, and **OAuth 2.0** scope-based **SSO**, securing access across **5 microservices** and client-facing applications.",
+        "Redesigned the **PostgreSQL** data model with schema normalization, **materialized views**, and a data archival strategy, delivering **~60% faster** queries and improved storage utilization.",
+        "Designed a constraint-aware **greedy algorithm** for pack-filling slot allocation in multi-dose medication packaging, replacing compute-intensive customization logic and improving robot fill-workflow throughput.",
+        "Architected a rules-driven middleware service with **FastAPI**, **RabbitMQ**, and **Celery** that routes and balances **10K+ fill orders/day** across **4 US-based pharmacies**, delivering an **80% efficiency gain** and reducing robot idle time."
+      ],
+      "date": "Dec. 2022 – Mar. 2025",
+      "location": "",
+      "organization": "DosePack (Meditab)",
+      "role": "Software Engineer"
+    }
+  ],
   "header": {
-    "name": "Darshit Joshi",
-    "phone": "+91 9328605989",
     "email": "joshidarshit2002@gmail.com",
     "links": [
       {
         "icon": "globe",
-        "url": "https://darshit-joshi.vercel.app",
-        "text": ""
+        "text": "",
+        "url": "https://darshit-joshi.vercel.app"
       },
       {
         "icon": "linkedin",
-        "url": "https://linkedin.com/in/darshitjoshi2002",
-        "text": ""
+        "text": "",
+        "url": "https://www.linkedin.com/in/darshitjoshi2002/"
       },
       {
         "icon": "github",
-        "url": "https://github.com/whojoshi69",
-        "text": ""
+        "text": "",
+        "url": "https://github.com/whojoshi69"
       }
-    ]
+    ],
+    "name": "Darshit Joshi",
+    "phone": "+91 9328605989"
   },
+  "projects": [],
   "sections": [
     {
       "id": "summary",
@@ -53,111 +102,31 @@
       "visible": true
     }
   ],
-  "summary": "Senior Software Engineer building secure, efficient, and user focused solutions. GCP certified ML Professional Engineer who enjoys optimizing processes, exploring quirky UIs, and staying updated with the latest tech.",
   "skills": [
     {
+      "category": "Agentic AI & GenAI",
+      "items": "AI Agents, Multi-Agent Systems, LangChain, LangGraph, Strands Agents, RAG, Tool/Function Calling, Prompt & Context Engineering, Human-in-the-Loop, Voice AI (Nova Sonic, ElevenLabs, Twilio), Cost & Latency Optimization"
+    },
+    {
+      "category": "ML & Generative Models",
+      "items": "PyTorch, XGBoost, Recommender & Ranking Systems, Bayesian Optimization (Optuna), MCMC, Hyperparameter Tuning, Stable Diffusion, ComfyUI, Qwen, LoRA & LLM Fine-Tuning, VAEs, CUDA, Speech/ASR"
+    },
+    {
+      "category": "Data Engineering",
+      "items": "ETL Pipelines, Control-M, Data Modeling, Query Optimization, SQL, PostgreSQL, MySQL, Snowflake, Sybase, MongoDB, Redis, OpenSearch, Vector Databases, PySpark, AWS Glue, SQLAlchemy, Pandas, Data Catalog Platforms"
+    },
+    {
       "category": "Development",
-      "items": "Python, JavaScript, TypeScript FastAPI, Django, SQLAlchemy, MySQL, PostgreSQL, Redis, RabbitMQ, Celery, WebSockets, React, Next.js"
+      "items": "Python, Java, C++, JavaScript, TypeScript, FastAPI, Django, SpringBoot, REST APIs, Microservices, Event-Driven Architecture, WebSockets, RabbitMQ, Celery, React, Next.js, System Design, Grafana, LogQL"
     },
     {
-      "category": "Deployment and DevOps",
-      "items": "Kubernetes, Jenkins, Docker, ArgoCD, Grafana, LogQL"
-    },
-    {
-      "category": "AI/ML",
-      "items": "LangChain, LangGraph, VectorDB, Stable Diffusion, PyTorch, LoRA finetuning, CUDA, VAEs, LLM fine-tuning, XGBoost, Decision trees, hyperparameter tuning"
+      "category": "Cloud, MLOps & DevOps",
+      "items": "AWS (EC2, ECS Fargate, S3, Lambda, SQS, SageMaker, Bedrock, Transcribe, Connect, CloudWatch), Oracle Cloud, GCP (Vertex AI, Dataflow, Kubeflow), Docker, Kubernetes, ArgoCD, Jenkins, CI/CD, MLOps, Model Deployment & Serving, Grafana, LogQL"
     },
     {
       "category": "AI Tools",
       "items": "Claude Code, Codex, Antigravity, Cursor, Kiro, Copilot"
-    },
-    {
-      "category": "AWS",
-      "items": "EC2, S3, ECS Fargate, Bedrock, Sagemaker, lambda, SQS, AWS connect, AWS transcribe, CloudWatch"
-    },
-    {
-      "category": "GCP",
-      "items": "VertexAI, DataFlow, KubeFlow"
     }
   ],
-  "projects": [
-    {
-      "name": "Ad recommendation",
-      "url": "",
-      "description": "Ad recommendation model to predict higher ctr XG Boost and MLOps pipeline."
-    },
-    {
-      "name": "Smart Call Assistant",
-      "url": "",
-      "description": "AI-powered call system with ElevenLabs TTS, AWS Transcribe STT, Bedrock LLM, and OpenSearch. Features Google Calendar booking and real estate tools."
-    },
-    {
-      "name": "Stable Diffusion",
-      "url": "",
-      "description": "Developed a project using Stable Diffusion models to generate images. Gained hands-on experience in generative AI concepts, including LORAs, VAEs, CUDA and checkpoints, enhancing my understanding of image generation workflows and model fine-tuning. This project deepened my knowledge generative AI techniques."
-    },
-    {
-      "name": "Consistent Character Generator",
-      "url": "",
-      "description": "Text-to-image and image-to-image system for consistent character creation using SageMaker, ComfyUI, and Qwen models. used LoRAs and quantized models to reduce processing time"
-    },
-    {
-      "name": "Medical RAG SMS Chatbot",
-      "url": "",
-      "description": "Healthcare chatbot using Twilio with issue escalation, tracking, and follow-up capabilities."
-    },
-    {
-      "name": "AI Movie Recommendation",
-      "url": "",
-      "description": "movie recommendation using opensource GenAI APIs."
-    },
-    {
-      "name": "Fraud detection business rule optimization",
-      "url": "",
-      "description": "Used optuna to reduce trillions of permutations to find best combination of detector scores for business rule which can catch max frauds with min false positives"
-    }
-  ],
-  "experience": [
-    {
-      "organization": "Armakuni",
-      "role": "Sr. Software Engineer",
-      "date": "Mar. 2025 – Present",
-      "location": "",
-      "bullets": [
-        "**Smart Call Assistant:** Developed AI-powered call assistant integrating **ElevenLabs TTS**, **AWS Transcribe STT**, **Amazon Bedrock LLM**, and **OpenSearch** for knowledge base. Implemented features for Google Calendar booking, availability lookup, and real estate broker website building.",
-        "**Medical RAG SMS Chatbot:** Built medical domain RAG chatbot using **Twilio** with comprehensive issue escalation, tracking, and follow-up capabilities for healthcare communication.",
-        "**Gaming Character Generation:** Created text-to-image and image-to-image generation system for consistent character creation in gaming industry using **SageMaker**, **ComfyUI**, and **Qwen image edit models**."
-      ]
-    },
-    {
-      "organization": "DosePack (Meditab)",
-      "role": "Software Engineer",
-      "date": "Dec. 2022 – Mar. 2025",
-      "location": "",
-      "bullets": [
-        "**API Development:** Designed and implemented RESTful APIs to streamline business workflows, reduce response times by 50%, and enhance system interoperability.",
-        "**Migration Automation:** Automated database migration processes, reducing deployment time by 40% with version control across environments. Created and published PyPi library for the same.",
-        "**Data Engineering and Analytics:** Built ETL pipelines for **data pre-processing, feature engineering and validation** to support analytics. created daily performance statics for stakeholders",
-        "**Real-time Systems:** Developed real-time solutions using **WebSockets**, enabling bi-directional communication for features like **live updates**, **dynamic dashboards**, and **notification services**.",
-        "**Authentication Systems:** Designed and implemented secure authentication systems using token-based mechanisms **(JWT)** and role-based access control **(RBAC)**. Developed a seamless single sign-on **(SSO)** solution with **OAuth2.0 scopes**.",
-        "**Database Engineering:** Enhanced backend performance by designing a well-optimized SQL database, significantly improving storage utilization and system efficiency.",
-        "**Algorithm Optimization:** Optimized computationally intensive algorithms for **pack-filling slot customizations** and workflow optimizations.",
-        "**Centralized pharmacy traffic manager:** Designed and implemented middleware service to manage optimized filling with set of rules for multiple US based pharmacy and filling services to improve their efficiency."
-      ]
-    }
-  ],
-  "achievements": [
-    "Training and Placement Coordinator at DDU (2023).",
-    "Interviewer for campus placement drives and senior roles at Armakuni.",
-    "Coordinator at DDU NSS club activities."
-  ],
-  "education": [
-    {
-      "institution": "Dharmsinh Desai University",
-      "degree": "B.Tech, CGPA: 8.72/10",
-      "date": "Jul. 2019 – May. 2023",
-      "location": "Nadiad, Gujarat",
-      "bullets": []
-    }
-  ]
+  "summary": "Senior Software Engineer with 3.5+ years of experience in AI, Data science and backend applications building production agentic AI systems, LLM/GenAI applications and large scale data and ML platforms. Co-architected a multi-tenant AI agent platform serving 50+ production AI capabilities over MCP tools, plus multi-agent GenAI pipelines that cut manual effort 80% and cost 60%. Depth in multi-agent orchestration, RAG and vector search, prompt and context engineering, computer vision, distributed pipelines and Python, Go, FastAPI, MLOps/LLMOps."
 }
